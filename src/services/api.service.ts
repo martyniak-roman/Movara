@@ -34,3 +34,13 @@ export async function getMovieById(id: string): Promise<IMovie> {
     return data;
   }
 }
+
+export async function searchMovies(
+  query: string,
+): Promise<TMDBResponse<IMovie>> {
+  const response = await fetch(`${BASE_URL}3/search/movie?query=${query}`, {
+    headers: HEADERS,
+  });
+  const data: TMDBResponse<IMovie> = await response.json();
+  return data;
+}
