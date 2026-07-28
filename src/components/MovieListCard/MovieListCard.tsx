@@ -1,7 +1,7 @@
 import { StarsRating } from "../StarsRating/StarsRating";
 import { MovieInfo } from "../MovieInfo/MovieInfo";
 import { PosterPreview } from "../PosterPreview/PosterPreview";
-import type { MoviesListCardProps } from "./moviesListCard.props.ts";
+import type { MoviesListCardProps } from "./moviesListCard.props";
 import Link from "next/link.js";
 
 export const MoviesListCard = ({ movie, allGenres }: MoviesListCardProps) => {

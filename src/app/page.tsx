@@ -1,28 +1,34 @@
 import { MoviesList } from "@/components/MoviesList/MoviesList";
+import { Pagination } from "@/components/Pagination/Pagination";
 import { IMovie } from "@/models/IMovie";
+import { TMDBResponse } from "@/models/ITMDBResponse";
 import { getMovies, searchMovies } from "@/services/api.service";
+import { Suspense } from "react";
 
 type HomeProps = {
   searchParams: Promise<{ search?: string; page?: string }>;
 };
 
-async function getMoviesData(query: string, page: string): Promise<IMovie[]> {
+async function getMoviesData(
+  query: string,
+  page: number,
+): Promise<TMDBResponse<IMovie>> {
   try {
     const data = query
       ? await searchMovies(query, page)
       : await getMovies(page);
-    return data?.results ?? [];
+    return data ?? { page: 1, results: [], total_pages: 0, total_results: 0 };
   } catch (error) {
-    console.error("Failed to load movies:", error);
-    return [];
+    console.log("Failed to load movies:", error);
+    return { page: 1, results: [], total_pages: 0, total_results: 0 };
   }
 }
 
 export default async function Home({ searchParams }: HomeProps) {
   const { search = "", page = "1" } = await searchParams;
-  const data = await getMoviesData(search, page);
+  const { results, total_pages } = await getMoviesData(search, Number(page));
 
-  if (data.length === 0) {
+  if (results.length === 0) {
     return (
       <main className="p-4">
         <p>Can't load movies at the moment.</p>
@@ -32,7 +38,10 @@ export default async function Home({ searchParams }: HomeProps) {
 
   return (
     <main className="p-4">
-      <MoviesList movies={data} allGenres={[]} />
+      <MoviesList movies={results} allGenres={[]} />
+      <Suspense fallback={null}>
+        <Pagination totalPages={total_pages} />
+      </Suspense>
     </main>
   );
 }

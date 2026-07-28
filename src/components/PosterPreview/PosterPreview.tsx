@@ -1,4 +1,5 @@
-import type { PosterPreviewProps } from "./posterPreview.props.ts";
+import type { PosterPreviewProps } from "./posterPreview.props";
+import Image from "next/image";
 
 const POSTER_BASE_URL = "https://image.tmdb.org/t/p/w500";
 const FALLBACK_POSTER =
@@ -9,9 +10,11 @@ export const PosterPreview = ({ posterPath, title }: PosterPreviewProps) => {
 
   return (
     <div className="relative aspect-2/3 overflow-hidden bg-app-bg">
-      <img
+      <Image
         src={src}
         alt={`${title} poster`}
+        width={300}
+        height={300}
         loading="lazy"
         className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
       />
