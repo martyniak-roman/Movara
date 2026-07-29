@@ -1,47 +1,50 @@
 import type { TMDBResponse } from "@/models/ITMDBResponse";
 import type { IMovie } from "@/models/IMovie";
-import { IGenre } from "@/models/IGenre";
+import type { IMovieDetails } from "@/models/IMovieDetails";
+import type { IGenre } from "@/models/IGenre";
 import { BASE_URL, HEADERS } from "./api.config";
 
-export async function getMovies(
-  page: number = 1,
-): Promise<TMDBResponse<IMovie>> {
-  const response = await fetch(`${BASE_URL}3/discover/movie?page=${page}`, {
+interface GetMoviesParams {
+  page?: number;
+  with_genres?: number;
+}
+
+export async function getMovies({page = 1, with_genres,}: GetMoviesParams = {}): Promise<TMDBResponse<IMovie>> {
+  const params = new URLSearchParams({ page: String(page) });
+  if (with_genres) params.set("with_genres", String(with_genres));
+
+  const response = await fetch(`${BASE_URL}3/discover/movie?${params.toString()}`, {
     headers: HEADERS,
     next: { revalidate: 3600 },
   });
-  const data: TMDBResponse<IMovie> = await response.json();
-  return data;
+  return response.json();
 }
 
-export async function getGenres(): Promise<TMDBResponse<{ genres: IGenre[] }>> {
+export async function getGenres(): Promise<{ genres: IGenre[] }> {
   const response = await fetch(BASE_URL + "3/genre/movie/list", {
     headers: HEADERS,
     next: { revalidate: 86400 },
   });
-  const data: TMDBResponse<{ genres: IGenre[] }> = await response.json();
-  return data;
+  return response.json();
 }
 
-export async function getMovieById(id: string): Promise<IMovie> {
-  const response = await fetch(`${BASE_URL}3/movie/${id}`, {
-    headers: HEADERS,
-    next: { revalidate: 3600 },
-  });
-  const data: IMovie = await response.json();
-  return data;
-}
-
-export async function searchMovies(
-  query: string,
-  page: number = 1,
-): Promise<TMDBResponse<IMovie>> {
+export async function getMovieDetails(id: string): Promise<IMovieDetails> {
   const response = await fetch(
-    `${BASE_URL}3/search/movie?query=${encodeURIComponent(query)}&page=${page}`,
-    {
-      headers: HEADERS,
-    },
+      `${BASE_URL}3/movie/${id}?append_to_response=videos,credits`,
+      {
+        headers: HEADERS,
+        next: { revalidate: 3600 },
+      },
   );
-  const data: TMDBResponse<IMovie> = await response.json();
-  return data;
+  return response.json();
+}
+
+export async function searchMovies(query: string, page: number = 1,): Promise<TMDBResponse<IMovie>> {
+  const params = new URLSearchParams({ query, page: String(page) });
+
+  const response = await fetch(`${BASE_URL}3/search/movie?${params.toString()}`, {
+    headers: HEADERS,
+    next: { revalidate: 300 },
+  });
+  return response.json();
 }

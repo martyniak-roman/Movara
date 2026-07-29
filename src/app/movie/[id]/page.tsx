@@ -1,4 +1,4 @@
-import { getMovieById } from "@/services/api.service";
+import {getMovieDetails} from "@/services/api.service";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
@@ -11,7 +11,7 @@ export async function generateMetadata({
   params,
 }: MovieDetailsProps): Promise<Metadata> {
   const { id } = await params;
-  const movie = await getMovieById(id);
+  const movie = await getMovieDetails(id);
 
   if (!movie) {
     return { title: "No movie found" };
@@ -32,7 +32,7 @@ export async function generateMetadata({
 
 export default async function MovieDetailsPage({ params }: MovieDetailsProps) {
   const { id } = await params;
-  const movie = await getMovieById(id);
+  const movie = await getMovieDetails(id);
 
   if (!movie) {
     notFound();
