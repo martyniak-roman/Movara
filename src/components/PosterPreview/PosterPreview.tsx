@@ -10,14 +10,13 @@ export const PosterPreview = ({ posterPath, title }: PosterPreviewProps) => {
 
   return (
     <div className="relative aspect-2/3 overflow-hidden bg-app-bg">
-      <Image
-        src={src}
-        alt={`${title} poster`}
-        width={300}
-        height={300}
-        loading="lazy"
-        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-      />
+        <Image
+            src={src}
+            alt={title}
+            fill
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 20vw"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+        />
     </div>
   );
 };

@@ -3,5 +3,5 @@ import type {IGenre} from "@/models/IGenre";
 
 export interface MoviesListProps {
     movies: IMovie[];
-    allGenres?: IGenre[];
+    allGenres: IGenre[];
 }

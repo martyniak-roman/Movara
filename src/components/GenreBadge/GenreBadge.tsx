@@ -1,10 +1,6 @@
 import type { GenreBadgeProps } from "./genreBadge.props.ts";
 
-export const GenreBadge = ({
-  name,
-  onClick,
-  isActive = false,
-}: GenreBadgeProps) => {
+export const GenreBadge = ({name, onClick, isActive = false,}: GenreBadgeProps) => {
   const baseClassName =
     "inline-flex items-center select-none rounded-[0.35rem] border px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.16em] transition duration-200";
 

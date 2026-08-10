@@ -1,5 +1,5 @@
-import type { IMovie } from "../../models/IMovie.ts";
-import type { IGenre } from "../../models/IGenre.ts";
+import type { IMovie } from "@/models/IMovie";
+import type { IGenre } from "@/models/IGenre";
 
 export interface MoviesListCardProps {
   movie: IMovie;

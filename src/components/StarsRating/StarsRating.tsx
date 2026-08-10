@@ -17,8 +17,8 @@ export const StarsRating = ({ rating }: StarsRatingProps) => {
             key={index}
             className={
               index < filledStars
-                ? "text-[0.95rem] text-rating"
-                : "text-[0.95rem] text-rating-muted"
+                  ? "text-rating drop-shadow-[0_0_6px_var(--color-rating-soft)]"
+                  : "text-rating-muted"
             }
           />
         ))}

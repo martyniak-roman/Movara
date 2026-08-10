@@ -2,33 +2,33 @@ import { IGenre } from "@/models/IGenre";
 import { GenreBadge } from "../GenreBadge/GenreBadge";
 import type { MovieInfoProps } from "./movieInfo.props.ts";
 
-export const MovieInfo = ({
-  title,
-  overview,
-  genreIds,
-  genres,
-}: MovieInfoProps) => {
-  const movieGenres = genres.filter((genre: IGenre) =>
-    genreIds.includes(genre.id),
-  );
+export const MovieInfo = ({title, overview, genreIds, genres,}: MovieInfoProps) => {
+    const safeGenres = Array.isArray(genres) ? genres : [];
+    const safeGenreIds = Array.isArray(genreIds) ? genreIds : [];
 
-  return (
-    <div className="space-y-3">
-      <div className="space-y-2">
-        <h3 className="line-clamp-1 text-base font-semibold tracking-tight text-app-text">
-          {title}
-        </h3>
+    const movieGenres = safeGenres.filter((genre: IGenre) =>
+        safeGenreIds.includes(genre.id),
+    );
 
-        <p className="line-clamp-2 text-sm leading-6 text-app-text-muted">
-          {overview || "No movie description available"}
-        </p>
-      </div>
+    return (
+        <div className="flex flex-col gap-3">
+            <div className="space-y-1.5">
+                <h3 className="line-clamp-1 text-lg font-bold tracking-tight text-white transition-colors group-hover:text-red-500">
+                    {title}
+                </h3>
 
-      <div className="flex flex-wrap gap-1.5">
-        {movieGenres.map((genre: IGenre) => (
-          <GenreBadge key={genre.id} name={genre.name} />
-        ))}
-      </div>
-    </div>
-  );
+                <p className="line-clamp-2 text-sm leading-relaxed text-neutral-400">
+                    {overview}
+                </p>
+            </div>
+
+            {movieGenres.length > 0 && (
+                <div className="flex flex-wrap items-center gap-2 pt-1">
+                    {movieGenres.map((genre: IGenre) => (
+                        <GenreBadge key={genre.id} name={genre.name} />
+                    ))}
+                </div>
+            )}
+        </div>
+    );
 };

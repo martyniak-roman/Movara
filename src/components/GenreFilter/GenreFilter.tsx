@@ -29,7 +29,7 @@ export const GenreFilter = ({ allGenres }: GenreFilterProps) => {
     };
 
     return (
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 mb-3">
             {allGenres.map((genre) => (
                 <GenreBadge
                     key={genre.id}
